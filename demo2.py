@@ -1,6 +1,8 @@
 import os
 
 import datetime
+import random
+
 from tigeropen.common.consts import Language
 from tigeropen.common.util.signature_utils import read_private_key
 from tigeropen.quote.quote_client import QuoteClient
@@ -31,19 +33,39 @@ def timestamp_2_str(arr):
     return temp
 
 
+def random_color():
+    color_arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+    color = ""
+    for i in range(6):
+        color += color_arr[random.randint(0, 14)]
+    return "#" + color
+
+
 if __name__ == '__main__':
     config = get_client_config()
     quant_client = QuoteClient(config)
 
-    aapl = quant_client.get_bars(['AAPL'])
-    # bars = QuoteClient.get_bars(['AAPL'], period=BarPeriod.DAY, begin_time=-1, end_time=-1, right=QuoteRight.BR, limit=251)
-    print(aapl)
+    stocks = ['QQQ', 'KWEB']
+    data = quant_client.get_bars(stocks)
 
-    x_time = timestamp_2_str(aapl['time'].values)
+    years = mdates.YearLocator()  # every year
+    months = mdates.MonthLocator()  # every month
+    yearsFmt = mdates.DateFormatter('%Y')
 
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
-    plt.figure(figsize=(10, 5))
-    plt.plot(x_time, aapl['close'], color='red')
-    plt.gcf().autofmt_xdate()
+    fig, ax = plt.subplots()
+
+    for stock in stocks:
+        y1 = data.loc[(data["symbol"] == stock)]
+        x_time = timestamp_2_str(y1['time'].values)
+        ax.plot(x_time, y1['close'], color=random_color(), label=stock)
+
+    ax.xaxis.set_major_locator(years)
+    ax.xaxis.set_major_formatter(yearsFmt)
+    ax.xaxis.set_minor_locator(months)
+    ax.autoscale_view()
+    ax.fmt_xdata = mdates.DateFormatter('%Y-%m')
+    # ax.fmt_ydata = price
+    ax.grid(True)
+    plt.legend()
     plt.show()
+
