@@ -9,19 +9,7 @@ from tigeropen.tiger_open_client import TigerOpenClient
 from tigeropen.trade.request.model import AccountsParams
 from tigeropen.trade.trade_client import TradeClient
 
-
-def get_client_config():
-    """
-    https://www.itiger.com/openapi/info 开发者信息获取
-    :return:
-    """
-    is_sandbox = False
-    client_config = TigerOpenClientConfig(sandbox_debug=is_sandbox)
-    client_config.private_key = read_private_key('your private key file path')
-    client_config.tiger_id = 'your tiger id'
-    client_config.account = 'your account'
-    client_config.language = Language.en_US
-    return client_config
+from common.Config import get_client_config
 
 
 def get_account_info():
