@@ -1,32 +1,13 @@
-import os
-
-import datetime
-import random
-
-from tigeropen.common.consts import Language
-from tigeropen.common.util.signature_utils import read_private_key
-from tigeropen.quote.quote_client import QuoteClient
-from tigeropen.tiger_open_config import TigerOpenClientConfig
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import numpy as np
+import matplotlib.pyplot as plt
+from tigeropen.quote.quote_client import QuoteClient
 
+from lib.date import timestamp_2_date_str
+from tiger.config import get_client_config
 
-def timestamp_2_str(arr):
-    # convert = lambda a: datetime.utcfromtimestamp(a).strftime('%Y-%m-%d')
-    temp = []
-    for x in arr.tolist():
-        temp.append(datetime.datetime.fromtimestamp(x / 1000.0).strftime('%Y-%m-%d'))
-    return temp
-
-
-def random_color():
-    color_arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
-    color = ""
-    for i in range(6):
-        color += color_arr[random.randint(0, 14)]
-    return "#" + color
-
+"""
+K线叠加
+"""
 
 if __name__ == '__main__':
     config = get_client_config()
@@ -46,7 +27,7 @@ if __name__ == '__main__':
     # ax1 = None
     # for index, stock in stocks:
     y1 = data.loc[(data["symbol"] == stocks[0])]
-    x_time = timestamp_2_str(y1['time'].values)
+    x_time = timestamp_2_date_str(y1['time'].values)
     ax.plot(x_time, y1['close'], color='red', label=stocks[0])
 
     y2 = data.loc[(data["symbol"] == stocks[1])]

@@ -9,7 +9,7 @@ from tigeropen.tiger_open_client import TigerOpenClient
 from tigeropen.trade.request.model import AccountsParams
 from tigeropen.trade.trade_client import TradeClient
 
-from common.Config import get_client_config
+from tiger.config import get_client_config
 
 
 def get_account_info():
