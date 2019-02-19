@@ -2,6 +2,7 @@ import os
 
 from tigeropen.common.consts import Language
 from tigeropen.common.util.signature_utils import read_private_key
+from tigeropen.quote.quote_client import QuoteClient
 from tigeropen.tiger_open_config import TigerOpenClientConfig
 
 
@@ -18,3 +19,14 @@ def get_client_config():
     client_config.language = Language.en_US
 
     return client_config
+
+
+def get_quote_client():
+    """
+    获取 QuoteClient
+    :return: QuoteClient
+    """
+    config = get_client_config()
+    quant_client = QuoteClient(config)
+
+    return quant_client
