@@ -10,3 +10,4 @@ target/
 .classpath
 .project
 .pytest_cache
+__pycache__

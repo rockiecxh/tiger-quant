@@ -15,7 +15,7 @@ if __name__ == '__main__':
     config = get_client_config()
     quant_client = QuoteClient(config)
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO']
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
     data = quant_client.get_bars(symbols=stocks, period=BarPeriod.MONTH, begin_time='2009-02-18', end_time='2019-02-18')
 
     # 构建新的 DataFrame 计算相关系数
