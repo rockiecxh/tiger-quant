@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from tigeropen.common.consts import BarPeriod
 from lib.date import timestamp_2_date_str
 from tiger.config import get_quote_client
+import seaborn as sns
+import pandas as pd
 
 """
 K线叠加
@@ -11,10 +13,9 @@ K线叠加
 if __name__ == '__main__':
     quant_client = get_quote_client()
 
-    stocks = ['QQQ', 'TLT']
+    stocks = ['QQQ', 'TLT', 'SPY']
     data = quant_client.get_bars(symbols=stocks, period=BarPeriod.MONTH, begin_time='2009-02-18', end_time='2019-02-18')
 
-    # fig, ax = plt.subplots()
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
@@ -36,5 +37,14 @@ if __name__ == '__main__':
     # ax.grid(True)
     # plt.yticks([])
     plt.legend()
+    plt.show()
+
+    df = pd.DataFrame()
+    for stock in stocks:
+        stock_data = data.loc[(data["symbol"] == stock)]
+        df[stock] = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
+        df['date'] = stock_data['time'].values
+
+    cc = sns.lineplot(data=df)
     plt.show()
 
