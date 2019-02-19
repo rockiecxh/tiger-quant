@@ -14,8 +14,3 @@ def get_symbol_names():
     symbols = quant_client.get_symbol_names(market=Market.ALL)
 
     return symbols
-
-
-if __name__ == '__main__':
-    all_symbols = get_symbol_names()
-    print(all_symbols)

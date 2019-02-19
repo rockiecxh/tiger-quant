@@ -1,0 +1,4 @@
+{
+  "quote_test.py::QuiteTest::test_get_symbol_names": true,
+  "quote_test.py::test_get_symbol_names": true
+}
