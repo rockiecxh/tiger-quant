@@ -1,13 +1,17 @@
-import matplotlib.dates as mdate
 import matplotlib.pyplot as plt
-from tigeropen.common.consts import BarPeriod
-from lib.date import timestamp_2_date_str
-from tiger.config import get_quote_client
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
+from matplotlib import dates
+from matplotlib.ticker import MultipleLocator
+from tigeropen.common.consts import BarPeriod
+
+from lib.date import timestamp_2_date
+from tiger.config import get_quote_client
+import numpy as np
 
 """
 K线叠加
+https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 """
 
 if __name__ == '__main__':
@@ -16,34 +20,34 @@ if __name__ == '__main__':
     stocks = ['QQQ', 'TLT', 'SPY']
     data = quant_client.get_bars(symbols=stocks, period=BarPeriod.MONTH, begin_time='2009-02-18', end_time='2019-02-18')
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-
-    # for index, stock in stocks:
-    y1 = data.loc[(data["symbol"] == stocks[0])]
-    # normalize
-    data1 =(y1['close']-y1['close'].mean())/y1['close'].std()
-    x_time = timestamp_2_date_str(y1['time'].values)
-    ax.plot(x_time, data1, color='red', label=stocks[0])
-    ax.xaxis.set_major_formatter(mdate.DateFormatter('%Y-%m'))
-
-    y2 = data.loc[(data["symbol"] == stocks[1])]
-    # normalize
-    data2 = (y2['close'] - y2['close'].mean()) / y2['close'].std()
-    ax2 = ax.twinx()
-    ax2.plot(x_time, data2, color='green', label=stocks[1])
-    # ax2.xaxis.set_major_formatter(mdate.DateFormatter('%Y-%m'))
-    # ax.autoscale_view()
-    # ax.grid(True)
-    # plt.yticks([])
-    plt.legend()
-    plt.show()
-
-    df = pd.DataFrame(index=data.loc[(data["symbol"] == stocks[0])]['time'])
+    time = data.loc[(data["symbol"] == stocks[0])]['time']
+    time = timestamp_2_date(time)
+    df = pd.DataFrame(index=time)
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
-        df[stock] = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
+        temp = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
+        df[stock] = temp.values
 
-    cc = sns.lineplot(data=df)
+    g = sns.lineplot(data=df)
+    # plt.xticks(rotation=90)
+    # g.xaxis.set_major_locator(MultipleLocator(10))
+    # g.xaxis.set_major_formatter(dates.DateFormatter('%Y-%m'))
+    # g.xaxis.set_major_formatter(dates.DateFormatter('%Y-%m'))
+    # g.xaxis.set_major_locator(dates.MonthLocator())
+
+    years = dates.YearLocator()  # every year
+    months = dates.MonthLocator()  # every month
+    yearsFmt = dates.DateFormatter('%Y')
+
+    # format the ticks
+    g.xaxis.set_major_locator(years)
+    g.xaxis.set_major_formatter(yearsFmt)
+    g.xaxis.set_minor_locator(months)
+
+    # round to nearest years...
+    datemin = np.datetime64(time[0], 'Y')
+    datemax = np.datetime64(time[-1], 'Y')
+    # g.set_xlim(datemin, datemax)
+
     plt.show()
 
