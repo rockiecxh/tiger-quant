@@ -39,11 +39,10 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    df = pd.DataFrame()
+    df = pd.DataFrame(index=data.loc[(data["symbol"] == stocks[0])]['time'])
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
         df[stock] = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
-        df['date'] = stock_data['time'].values
 
     cc = sns.lineplot(data=df)
     plt.show()
