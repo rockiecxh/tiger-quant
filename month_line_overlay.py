@@ -17,7 +17,7 @@ https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'TLT', 'SPY']
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
     data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
                                  begin_time=get_today(), end_time=date_delta(-52 * 10))
 

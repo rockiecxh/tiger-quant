@@ -1,10 +1,14 @@
+import logging
 import os
-
-from tigeropen.common.consts import Language
+from properties.p import Property
+from tigeropen.common.consts import Language, BarPeriod, QuoteRight
 from tigeropen.common.util.signature_utils import read_private_key
 from tigeropen.quote.quote_client import QuoteClient
 from tigeropen.tiger_open_config import TigerOpenClientConfig
-from properties.p import Property
+from lib.pandas import read_pd_from_cache, hash_code
+
+
+logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
 
 
 def get_client_config():
@@ -37,3 +41,35 @@ def get_quote_client():
     quote_client = QuoteClient(config)
 
     return quote_client
+
+
+def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY,
+                        begin_time=-1, end_time=-1, right=QuoteRight.BR, limit=251, lang=None):
+    """
+    走文件缓存，加快多次访问速度
+    :param quote_client:
+    :param symbols:
+    :param period:
+    :param begin_time:
+    :param end_time:
+    :param right:
+    :param limit:
+    :param lang:
+    :return:
+    """
+    condition_hash = hash_code([symbols, period, begin_time, end_time, right, limit, lang])
+    logging.info(condition_hash)
+
+    # 从文件缓存获取数据
+    data = read_pd_from_cache(condition_hash)
+
+    if data is not None:
+        return data
+
+    # 调用API获取
+    if data is None:
+        data = quote_client.get_bars(symbols=symbols, period=BarPeriod.MONTH,
+                                 begin_time=begin_time, end_time=end_time)
+
+    return data
+
