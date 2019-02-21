@@ -1,8 +1,12 @@
 import hashlib
+import logging
 import os
 import tempfile
 import pandas as pd
 import numpy as np
+
+
+logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
 
 
 def tuple_2_md5(tp: tuple):
@@ -31,6 +35,8 @@ def read_pd_from_cache(md5: str):
         os.makedirs(cache_dir)
 
     cache_file = os.path.join(cache_dir, md5 + '.h5')
+
+    logging.info('Read from local cache: %s', cache_file)
 
     if not os.path.isfile(cache_file):
         return None
@@ -66,7 +72,8 @@ def normalize(df: pd.DataFrame, column: str):
     :return:
     """
     # temp = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
-    normalized_data = (df[column] - df[column].mean()) / df[column].std().values()
+    normalized_data = (df[column] - df[column].mean()) / df[column].std()
+    normalized_data = normalized_data.values
     return normalized_data
 
 

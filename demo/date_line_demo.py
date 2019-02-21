@@ -25,10 +25,10 @@ yearsFmt = mdates.DateFormatter('%Y')
 # Load a numpy record array from yahoo csv data with fields date, open, close,
 # volume, adj_close from the mpl-data/example directory. The record array
 # stores the date as an np.datetime64 with a day unit ('D') in the date column.
-with open(os.path.join(matplotlib._get_data_path(), 'goog.npz'), mode='rb') as datafile:
+with open(os.path.join(matplotlib._get_data_path(), 'sample_data/goog.npz'), mode='rb') as datafile:
     r = np.load(datafile)['price_data'].view(np.recarray)
 
-with open(os.path.join(matplotlib._get_data_path(), 'aapl.npz'), mode='rb') as datafile:
+with open(os.path.join(matplotlib._get_data_path(), 'sample_data/aapl.npz'), mode='rb') as datafile:
     r2 = np.load(datafile)['price_data'].view(np.recarray)
 
 fig, ax = plt.subplots()

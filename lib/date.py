@@ -68,7 +68,7 @@ def date_delta(week: int):
     :return: 日期字符串
     """
     target_date = datetime.datetime.today() + datetime.timedelta(weeks=week)
-    target_date.strftime('%Y-%m-%d')
+    target_date = target_date.strftime('%Y-%m-%d')
     return target_date
 
 

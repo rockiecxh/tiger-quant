@@ -1,11 +1,13 @@
 import logging
 import os
+
 from properties.p import Property
 from tigeropen.common.consts import Language, BarPeriod, QuoteRight
 from tigeropen.common.util.signature_utils import read_private_key
 from tigeropen.quote.quote_client import QuoteClient
 from tigeropen.tiger_open_config import TigerOpenClientConfig
-from lib.pandas import read_pd_from_cache, hash_code, tuple_2_md5
+
+from lib.pandas import read_pd_from_cache, tuple_2_md5, write_pd_2_cache
 
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
 
@@ -67,7 +69,10 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
     # 调用API获取
     if data is None:
         data = quote_client.get_bars(symbols=symbols, period=BarPeriod.MONTH,
-                                 begin_time=begin_time, end_time=end_time)
+                                 begin_time=begin_time, end_time=end_time, limit=10000)
+
+        if not data.empty:
+            write_pd_2_cache(data, md5)
 
     return data
 
