@@ -6,7 +6,8 @@ from matplotlib.ticker import MultipleLocator
 from tigeropen.common.consts import BarPeriod
 
 from lib.date import timestamp_2_date, date_delta, get_today
-from tiger.config import get_quote_client
+from lib.pandas import normalize
+from tiger.config import get_quote_client, get_bars_from_cache
 import numpy as np
 
 """
@@ -34,9 +35,9 @@ def month_line_overlay_plot(data: pd.DataFrame):
 
     fig, ax = plt.subplots()
     for stock in stocks:
-        stock_data = data.loc[(data["symbol"] == stock)]
-        temp = (stock_data['close'] - stock_data['close'].mean()) / stock_data['close'].std()
-        ax.plot(time, temp.values)
+        stock_data = data.loc[(data['symbol'] == stock)]
+        temp = normalize(stock_data, 'close')
+        ax.plot(time, temp)
 
     years = dates.YearLocator()  # every year
     months = dates.MonthLocator()  # every month
@@ -64,8 +65,11 @@ if __name__ == '__main__':
     quote_client = get_quote_client()
 
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
-                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
+    # data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
+    #                              begin_time=get_today(), end_time=date_delta(-52 * 10))
+
+    data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
+                               begin_time=get_today(), end_time=date_delta(-52 * 10))
 
     month_line_overlay_plot(data)
 
