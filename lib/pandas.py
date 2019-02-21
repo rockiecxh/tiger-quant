@@ -78,9 +78,26 @@ def normalize(df: pd.DataFrame, column: str):
 
 
 def beta(market_returns, stock_returns):
+    """
+    计算 Beta 值
+    :param market_returns:
+    :param stock_returns:
+    :return:
+    """
     # np_array = df.values
     # m = np_array[:,0] # market returns are column zero from numpy array
     # s = np_array[:,1] # stock returns are column one from numpy array
     covariance = np.cov(stock_returns, market_returns)  # Calculate covariance between stock and market
     beta = covariance[0, 1] / covariance[1, 1]
     return beta
+
+
+def offset_by_date(df: pd.DataFrame, stocks: []):
+    """
+    清洗数据，使每只票的总数据条数都能相等
+    :param df:
+    :param stocks:
+    :return:
+    """
+    for stock in stocks:
+        stock_data = df.loc[(df["symbol"] == stock)]

@@ -21,7 +21,9 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     df = pd.DataFrame(index=time)
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
-        df[stock] = normalize(stock_data, 'close')
+        cutted = list(normalize(stock_data, 'close'))[0:len(time)]
+        print('%s %s', stock, len(cutted))
+        df[stock] = cutted
 
     g = sns.lineplot(data=df)
 
@@ -35,9 +37,9 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    stocks = ['QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
-                               begin_time=date_delta(-52 * 10), end_time=get_today())
+                               begin_time=date_delta(-52 * 15), end_time=get_today())
 
     month_line_overlay_plot(data, stocks)
 
