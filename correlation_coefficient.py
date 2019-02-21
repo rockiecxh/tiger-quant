@@ -2,10 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from tigeropen.common.consts import BarPeriod
-from tigeropen.quote.quote_client import QuoteClient
 
 from lib.date import get_today, date_delta
-from tiger.config import get_client_config
+from tiger.config import get_quote_client, get_bars_from_cache
 
 """
 获取指定代码的相关系数并以热力图的方式展现
@@ -29,11 +28,10 @@ def correlation_coefficient_plot(data: pd.DataFrame):
 
 
 if __name__ == '__main__':
-    config = get_client_config()
-    quote_client = QuoteClient(config)
+    quote_client = get_quote_client()
 
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
-                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
+    data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
+                               begin_time=date_delta(-52 * 10), end_time=get_today())
     correlation_coefficient_plot(data)
 
