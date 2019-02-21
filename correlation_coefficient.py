@@ -3,6 +3,8 @@ import pandas as pd
 import seaborn as sns
 from tigeropen.common.consts import BarPeriod
 from tigeropen.quote.quote_client import QuoteClient
+
+from lib.date import get_today, date_delta
 from tiger.config import get_client_config
 
 """
@@ -13,10 +15,11 @@ https://www.jianshu.com/p/139f06a14916
 
 if __name__ == '__main__':
     config = get_client_config()
-    quant_client = QuoteClient(config)
+    quote_client = QuoteClient(config)
 
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = quant_client.get_bars(symbols=stocks, period=BarPeriod.MONTH, begin_time='2009-02-18', end_time='2019-02-18')
+    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
+                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
 
     # 构建新的 DataFrame 计算相关系数
     df = pd.DataFrame()
