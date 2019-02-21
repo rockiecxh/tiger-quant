@@ -33,7 +33,6 @@ def timestamp_2_year_str(arr: object) -> object:
     :param arr:
     :return: list
     """
-    # convert = lambda a: datetime.utcfromtimestamp(a).strftime('%Y-%m-%d')
     temp = []
     for x in arr.tolist():
         temp.append(datetime.datetime.fromtimestamp(x / 1000.0).strftime('%Y'))
