@@ -5,7 +5,7 @@ from matplotlib import dates
 from matplotlib.ticker import MultipleLocator
 from tigeropen.common.consts import BarPeriod
 
-from lib.date import timestamp_2_date
+from lib.date import timestamp_2_date, date_delta, get_today
 from tiger.config import get_quote_client
 import numpy as np
 
@@ -15,10 +15,11 @@ https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 """
 
 if __name__ == '__main__':
-    quant_client = get_quote_client()
+    quote_client = get_quote_client()
 
     stocks = ['QQQ', 'TLT', 'SPY']
-    data = quant_client.get_bars(symbols=stocks, period=BarPeriod.MONTH, begin_time='2009-02-18', end_time='2019-02-18')
+    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
+                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
 
     time = data.loc[(data["symbol"] == stocks[0])]['time']
     time = timestamp_2_date(time)

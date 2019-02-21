@@ -34,6 +34,6 @@ def get_quote_client():
     :return: QuoteClient
     """
     config = get_client_config()
-    quant_client = QuoteClient(config)
+    quote_client = QuoteClient(config)
 
-    return quant_client
+    return quote_client
