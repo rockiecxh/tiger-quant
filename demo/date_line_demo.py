@@ -28,8 +28,12 @@ yearsFmt = mdates.DateFormatter('%Y')
 with open(os.path.join(matplotlib._get_data_path(), 'goog.npz'), mode='rb') as datafile:
     r = np.load(datafile)['price_data'].view(np.recarray)
 
+with open(os.path.join(matplotlib._get_data_path(), 'aapl.npz'), mode='rb') as datafile:
+    r2 = np.load(datafile)['price_data'].view(np.recarray)
+
 fig, ax = plt.subplots()
 ax.plot(r.date, r.adj_close)
+ax.plot(r2.date, r2.adj_close)
 
 # format the ticks
 ax.xaxis.set_major_locator(years)
