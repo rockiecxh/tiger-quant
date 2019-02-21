@@ -14,13 +14,8 @@ K线叠加
 https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 """
 
-if __name__ == '__main__':
-    quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
-                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
-
+def month_line_overlay_plot(data: pd.DataFrame):
     time = data.loc[(data["symbol"] == stocks[0])]['time']
     time = timestamp_2_date(time)
 
@@ -63,4 +58,15 @@ if __name__ == '__main__':
     fig.autofmt_xdate()
 
     plt.show()
+
+
+if __name__ == '__main__':
+    quote_client = get_quote_client()
+
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
+                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
+
+    month_line_overlay_plot(data)
+
 

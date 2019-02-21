@@ -5,8 +5,7 @@ from tigeropen.common.consts import Language, BarPeriod, QuoteRight
 from tigeropen.common.util.signature_utils import read_private_key
 from tigeropen.quote.quote_client import QuoteClient
 from tigeropen.tiger_open_config import TigerOpenClientConfig
-from lib.pandas import read_pd_from_cache, hash_code
-
+from lib.pandas import read_pd_from_cache, hash_code, tuple_2_md5
 
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
 
@@ -57,11 +56,10 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
     :param lang:
     :return:
     """
-    condition_hash = hash_code([symbols, period, begin_time, end_time, right, limit, lang])
-    logging.info(condition_hash)
+    md5 = tuple_2_md5([symbols, period, begin_time, end_time, right, limit, lang])
 
     # 从文件缓存获取数据
-    data = read_pd_from_cache(condition_hash)
+    data = read_pd_from_cache(md5)
 
     if data is not None:
         return data

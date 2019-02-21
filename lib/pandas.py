@@ -4,13 +4,16 @@ import tempfile
 import pandas as pd
 
 
-def hash_code(tp: tuple):
+def tuple_2_md5(tp: tuple):
+    """
+    根据tuple生成md5
+    :param tp:
+    :return:
+    """
     text = ''
     for i in tp:
         text = text + str(i)
 
-    # code = hash(text)
-    # code = code if code > 0 else -code
     text = text.strip()  # or new.split()[index]
     code = hashlib.md5(text.encode()).hexdigest()
     return code

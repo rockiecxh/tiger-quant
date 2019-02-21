@@ -13,14 +13,8 @@ from tiger.config import get_client_config
 https://www.jianshu.com/p/139f06a14916
 """
 
-if __name__ == '__main__':
-    config = get_client_config()
-    quote_client = QuoteClient(config)
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
-                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
-
+def correlation_coefficient_plot(data: pd.DataFrame):
     # 构建新的 DataFrame 计算相关系数
     df = pd.DataFrame()
     for stock in stocks:
@@ -32,3 +26,14 @@ if __name__ == '__main__':
     plt.figure(figsize=(12, 10))
     foo = sns.heatmap(corr, vmax=0.6, square=True, annot=True)
     plt.show()
+
+
+if __name__ == '__main__':
+    config = get_client_config()
+    quote_client = QuoteClient(config)
+
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    data = quote_client.get_bars(symbols=stocks, period=BarPeriod.MONTH,
+                                 begin_time=get_today(), end_time=date_delta(-52 * 10))
+    correlation_coefficient_plot(data)
+
