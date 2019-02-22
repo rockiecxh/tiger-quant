@@ -32,6 +32,6 @@ if __name__ == '__main__':
 
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
-                               begin_time=date_delta(-52 * 10), end_time=get_today())
+                               begin_time=date_delta(-52 * 14), end_time=get_today())
     correlation_coefficient_plot(data)
 

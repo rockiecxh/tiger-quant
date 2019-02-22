@@ -2,8 +2,9 @@ import hashlib
 import logging
 import os
 import tempfile
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
@@ -99,5 +100,24 @@ def offset_by_date(df: pd.DataFrame, stocks: []):
     :param stocks:
     :return:
     """
+
+    tmp = df[['symbol']].groupby(['symbol']).size()
+    tmp = tmp.sort_values(ascending=True)
+    min_count_stock = tmp.index[0]
+    # min_data_count = tmp[0]
+
+    min_data = df.loc[(df["symbol"] == min_count_stock)]
+    std_time = min_data['time']
+
     for stock in stocks:
-        stock_data = df.loc[(df["symbol"] == stock)]
+        cur_data = df.loc[(df["symbol"] == stock)]
+        logging.info('Lenght: %s %s', stock, len(cur_data))
+
+        current_time = cur_data['time']
+
+        diff = list(set(std_time.values).difference(set(current_time.values)))
+        logging.info(timestamp_2_month(current_time.values))
+
+    return df
+
+

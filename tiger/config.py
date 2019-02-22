@@ -74,7 +74,7 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
         if not data.empty:
             write_pd_2_cache(data, md5)
 
-    data = offset_by_date(data)
+    # data = offset_by_date(data)
 
     return data
 
