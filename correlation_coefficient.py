@@ -13,7 +13,7 @@ https://www.jianshu.com/p/139f06a14916
 """
 
 
-def correlation_coefficient_plot(data: pd.DataFrame):
+def correlation_coefficient_plot(data: pd.DataFrame, stocks: []):
     # 构建新的 DataFrame 计算相关系数
     df = pd.DataFrame()
     for stock in stocks:
