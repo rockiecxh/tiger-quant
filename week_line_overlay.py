@@ -5,7 +5,7 @@ from matplotlib import dates
 from tigeropen.common.consts import BarPeriod
 
 from lib.date import date_delta, get_today, timestamp_2_date
-from lib.pandas import normalize
+from lib.quant import normalize
 from tiger.config import get_quote_client, get_bars_from_cache
 
 """

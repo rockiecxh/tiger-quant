@@ -1,6 +1,7 @@
 from correlation_coefficient import correlation_coefficient_plot
 from lib.pandas import read_pd_from_cache
 from month_line_overlay import month_line_overlay_plot
+from volatility_overlay import alpha_beta_plot
 
 
 def month_line_overlay_plot_test():
@@ -16,6 +17,13 @@ def correlation_coefficient_plot_test():
     correlation_coefficient_plot(data, stocks)
 
 
+def test_alpha_beta_plot():
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    data = read_pd_from_cache('5b55eaf8428de1427b80842878b28a73')
+
+    alpha_beta_plot(data, stocks)
+
+
 if __name__ == '__main__':
-    correlation_coefficient_plot_test()
+    test_alpha_beta_plot()
 
