@@ -46,8 +46,8 @@ logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelnam
 def alpha_beta_plot(data: pd.DataFrame, stocks: []):
     """
     Alpha, Beta 展示
-    :param df:
-    :param stocks:
+    :param data: 数据
+    :param stocks: 股票
     :return:
     """
 
