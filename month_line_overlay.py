@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from matplotlib import dates
-from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 from tigeropen.common.consts import BarPeriod
 
 from lib.date import date_delta, get_today, timestamp_2_date
@@ -19,6 +18,15 @@ https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
 
 
+def onpick(event):
+    if event.inaxes is not None:
+        # logging.info('event')
+        x = event.xdata
+        y = event.ydata
+        # event.inaxes.plot(x, y, 'ro')
+        # event.canvas.draw()
+
+
 def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     time = data.loc[(data["symbol"] == stocks[0])]['time']
     time = timestamp_2_date(time.tolist())
@@ -26,7 +34,7 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     df = pd.DataFrame(index=time)
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
-        stock_data = list(normalize(stock_data, 'close'))[0:len(time)]
+        stock_data = list(normalize(stock_data, 'close'))
 
         logging.info('%s %s', stock, len(stock_data))
 
@@ -37,6 +45,8 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     # X轴刻度设置
     g.format_xdata = dates.AutoDateFormatter(dates.MonthLocator())
 
+    # 鼠标hover 事件
+    # plt.gcf().canvas.mpl_connect('motion_notify_event', onpick)
     plt.legend()
     plt.show()
 
