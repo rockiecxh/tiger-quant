@@ -54,22 +54,22 @@ def alpha_beta_plot(data: pd.DataFrame, stocks: []):
     spy_data = data.loc[(data["symbol"] == 'SPY')]
     qqq_data = data.loc[(data["symbol"] == 'QQQ')]
 
-    return_qqq = qqq_data['close'].pct_change()[1:]
-    return_spy = spy_data['close'].pct_change()[1:]
+    return_qqq = list(qqq_data['close'].pct_change().dropna())
+    return_spy = list(spy_data['close'].pct_change().dropna())
 
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
 
-        return_stock = stock_data['close'].pct_change()[1:]
+        return_stock = list(stock_data['close'].pct_change().dropna())
 
         # 以SPY为基准计算alpha, beta
         alpha_spy, beta_spy = alpha_beta(return_spy, return_stock)
 
         alpha_qqq, beta_qqq = alpha_beta(return_qqq, return_stock)
 
-        logging.info('SPY alpha: %s, beta: %s', str(alpha_spy), str(beta_spy))
+        logging.info('SPY basics %s alpha: %s, beta: %s', stock, str(alpha_spy), str(beta_spy))
 
-        logging.info('QQQ alpha: %s, beta: %s', str(alpha_qqq), str(beta_qqq))
+        logging.info('QQQ basics %s alpha: %s, beta: %s', stock, str(alpha_qqq), str(beta_qqq))
 
 
 if __name__ == '__main__':

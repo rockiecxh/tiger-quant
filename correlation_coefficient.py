@@ -30,8 +30,9 @@ def correlation_coefficient_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    stocks = ['QQQ', 'SPY', 'WTI', 'IAU']
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
                                begin_time=date_delta(-52 * 14), end_time=get_today())
-    correlation_coefficient_plot(data)
+
+    correlation_coefficient_plot(data, stocks)
 

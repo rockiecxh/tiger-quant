@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import dates
 from tigeropen.common.consts import BarPeriod
 
-from lib.date import date_delta, get_today, timestamp_2_date
+from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month
 from lib.quant import normalize
 from tiger.config import get_quote_client, get_bars_from_cache
 
@@ -15,7 +15,7 @@ K线叠加
 https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 """
 
-logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
 
 
 def onpick(event):
@@ -34,6 +34,7 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     df = pd.DataFrame(index=time)
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
+        # logging.info(timestamp_2_month(stock_data['time']))
         stock_data = list(normalize(stock_data, 'close'))
 
         logging.info('%s %s', stock, len(stock_data))
@@ -54,7 +55,7 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
+    stocks = ['QQQ', 'SPY', 'WTI', 'IAU']
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
                                begin_time=date_delta(-52 * 14), end_time=get_today())
 
