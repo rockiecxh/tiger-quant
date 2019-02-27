@@ -1,7 +1,7 @@
-from stock_relation import correlation_coefficient_plot
 from lib.pandas import read_pd_from_cache
 from month_line_overlay import month_line_overlay_plot
-from stock_beta import alpha_beta_plot, linear_regression_plot
+from stock_beta import alpha_beta_plot
+from stock_relation import correlation_coefficient_plot, linear_regression_plot
 
 
 def month_line_overlay_plot_test():
