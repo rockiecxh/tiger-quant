@@ -133,3 +133,7 @@ if __name__ == '__main__':
 
     alpha_beta_plot(data, stocks)
 
+    linear_space_plot(data, stocks)
+
+    
+
