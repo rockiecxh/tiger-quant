@@ -1,3 +1,4 @@
+import cmath
 import logging
 
 import matplotlib.pyplot as plt
@@ -10,6 +11,7 @@ from lib.date import date_delta, get_today
 from lib.quant import beta, alpha_beta
 from tiger.config import get_bars_from_cache, get_quote_client
 import pandas as pd
+import numpy as np
 
 
 """
@@ -70,6 +72,56 @@ def alpha_beta_plot(data: pd.DataFrame, stocks: []):
         logging.info('SPY basics %s alpha: %s, beta: %s', stock, str(alpha_spy), str(beta_spy))
 
         logging.info('QQQ basics %s alpha: %s, beta: %s', stock, str(alpha_qqq), str(beta_qqq))
+
+
+def subplot_num(total: int):
+    """
+
+    :param index:
+    :return:
+    """
+    sqrt = cmath.sqrt(total).real
+    if sqrt.real.is_integer():
+        return sqrt, sqrt
+    else:
+        return int(sqrt) + 1, int(sqrt)
+
+
+def linear_space_plot(data: pd.DataFrame, stocks: []):
+    """
+    线性回归图
+    :param data: 数据
+    :param stocks: 票
+    :return:
+    """
+
+    spy_data = data.loc[(data["symbol"] == 'SPY')]
+    # qqq_data = data.loc[(data["symbol"] == 'QQQ')]
+
+    return_spy = spy_data['close'].pct_change().dropna()
+
+    m, n = subplot_num(len(stocks))
+    fig = plt.figure()
+    idx = 1
+    for stock in stocks:
+        stock_data = data.loc[(data["symbol"] == stock)]
+
+        return_stock = list(stock_data['close'].pct_change().dropna())
+        alpha_spy, beta_spy = alpha_beta(return_spy, return_stock)
+
+        x2 = np.linspace(return_spy.min(), return_spy.max(), 100)
+        y_hat = x2 * beta_spy + alpha_spy
+
+        # plt.figure(figsize=(10, 7))
+        ax = fig.add_subplot(m, n, idx)
+        ax.scatter(list(return_spy), return_stock, alpha=0.3)
+        # ax.xlabel('SPY Daily Return')
+        # ax.ylabel('{0} Daily Return'.format(stock))
+        ax.plot(x2, y_hat, alpha=0.9)
+
+        idx += 1
+
+    plt.show()
 
 
 if __name__ == '__main__':
