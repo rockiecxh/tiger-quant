@@ -7,6 +7,7 @@ from pandas_datareader import data as pdr
 from statsmodels import regression
 from tigeropen.common.consts import BarPeriod
 
+from lib.chart import subplot_num
 from lib.date import date_delta, get_today
 from lib.quant import beta, alpha_beta
 from tiger.config import get_bars_from_cache, get_quote_client
@@ -52,7 +53,6 @@ def alpha_beta_plot(data: pd.DataFrame, stocks: []):
     :param stocks: 股票
     :return:
     """
-
     spy_data = data.loc[(data["symbol"] == 'SPY')]
     qqq_data = data.loc[(data["symbol"] == 'QQQ')]
 
@@ -74,71 +74,15 @@ def alpha_beta_plot(data: pd.DataFrame, stocks: []):
         logging.info('QQQ basics %s alpha: %s, beta: %s', stock, str(alpha_qqq), str(beta_qqq))
 
 
-def subplot_num(total: int):
-    """
-
-    :param index:
-    :return:
-    """
-    sqrt = cmath.sqrt(total).real
-    if sqrt.real.is_integer():
-        return sqrt, sqrt
-    else:
-        return int(sqrt) + 1, int(sqrt)
-
-
-def linear_space_plot(data: pd.DataFrame, stocks: [], base_stock: str):
-    """
-    线性回归图
-    :param data: 数据
-    :param stocks: 票代码
-    :return: 基准票代码
-    """
-    spy_data = data.loc[(data["symbol"] == base_stock)]
-
-    return_spy = spy_data['close'].pct_change().dropna()
-
-    m, n = subplot_num(len(stocks))
-    fig = plt.figure()
-    idx = 1
-    for stock in stocks:
-        if stock == base_stock:
-            continue
-
-        stock_data = data.loc[(data["symbol"] == stock)]
-
-        logging.info("%s data size %s", stock, len(stock_data))
-
-        return_stock = list(stock_data['close'].pct_change().dropna())
-        alpha_spy, beta_spy = alpha_beta(return_spy, return_stock)
-
-        x2 = np.linspace(return_spy.min(), return_spy.max(), 100)
-        y_hat = x2 * beta_spy + alpha_spy
-
-        ax = fig.add_subplot(m, n, idx)
-        ax.scatter(list(return_spy), return_stock, alpha=0.3)
-        ax.plot(x2, y_hat, alpha=0.9)
-
-        plt.xlabel('{0} Daily Return'.format(base_stock))
-        plt.ylabel('{0} Daily Return'.format(stock))
-
-        idx += 1
-
-    plt.show()
-
-
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    base_stock = 'SCHB'
     stocks = ['SCHB', 'QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
 
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.DAY,
                                begin_time=date_delta(-52 * 5), end_time=get_today())
 
-    # alpha_beta_plot(data, stocks)
-
-    linear_space_plot(data, stocks, base_stock)
+    alpha_beta_plot(data, stocks)
 
     
 

@@ -1,3 +1,4 @@
+import cmath
 import random
 
 
@@ -12,3 +13,16 @@ def random_color():
         color += color_arr[random.randint(0, 14)]
 
     return "#" + color
+
+
+def subplot_num(total: int):
+    """
+    根据子图数量计算subplot 9 = (3, 3) 10=(4, 3)
+    :param index:
+    :return:
+    """
+    sqrt = cmath.sqrt(total).real
+    if sqrt.real.is_integer():
+        return sqrt, sqrt
+    else:
+        return int(sqrt) + 1, int(sqrt)

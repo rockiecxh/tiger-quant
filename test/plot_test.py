@@ -1,7 +1,7 @@
-from correlation_coefficient import correlation_coefficient_plot
+from stock_relation import correlation_coefficient_plot
 from lib.pandas import read_pd_from_cache
 from month_line_overlay import month_line_overlay_plot
-from volatility_overlay import alpha_beta_plot, linear_space_plot
+from stock_beta import alpha_beta_plot, linear_regression_plot
 
 
 def month_line_overlay_plot_test():
@@ -25,9 +25,11 @@ def test_alpha_beta_plot():
 
 
 def test_linear_space_plot():
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
-    data = read_pd_from_cache('5b55eaf8428de1427b80842878b28a73')
-    linear_space_plot(data, stocks)
+    data = read_pd_from_cache('4b83ce6d6941c0272dd1225343b268da')
+    base_stock = 'SCHB'
+    stocks = ['SCHB', 'QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
+
+    linear_regression_plot(data, stocks, base_stock)
 
 
 if __name__ == '__main__':
