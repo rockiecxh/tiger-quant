@@ -42,7 +42,7 @@ plt.show()
 """
 
 
-logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
 
 
 def alpha_beta_plot(data: pd.DataFrame, stocks: []):
@@ -87,16 +87,14 @@ def subplot_num(total: int):
         return int(sqrt) + 1, int(sqrt)
 
 
-def linear_space_plot(data: pd.DataFrame, stocks: []):
+def linear_space_plot(data: pd.DataFrame, stocks: [], base_stock: str):
     """
     线性回归图
     :param data: 数据
-    :param stocks: 票
-    :return:
+    :param stocks: 票代码
+    :return: 基准票代码
     """
-
-    spy_data = data.loc[(data["symbol"] == 'SPY')]
-    # qqq_data = data.loc[(data["symbol"] == 'QQQ')]
+    spy_data = data.loc[(data["symbol"] == base_stock)]
 
     return_spy = spy_data['close'].pct_change().dropna()
 
@@ -104,7 +102,12 @@ def linear_space_plot(data: pd.DataFrame, stocks: []):
     fig = plt.figure()
     idx = 1
     for stock in stocks:
+        if stock == base_stock:
+            continue
+
         stock_data = data.loc[(data["symbol"] == stock)]
+
+        logging.info("%s data size %s", stock, len(stock_data))
 
         return_stock = list(stock_data['close'].pct_change().dropna())
         alpha_spy, beta_spy = alpha_beta(return_spy, return_stock)
@@ -112,12 +115,12 @@ def linear_space_plot(data: pd.DataFrame, stocks: []):
         x2 = np.linspace(return_spy.min(), return_spy.max(), 100)
         y_hat = x2 * beta_spy + alpha_spy
 
-        # plt.figure(figsize=(10, 7))
         ax = fig.add_subplot(m, n, idx)
         ax.scatter(list(return_spy), return_stock, alpha=0.3)
-        # ax.xlabel('SPY Daily Return')
-        # ax.ylabel('{0} Daily Return'.format(stock))
         ax.plot(x2, y_hat, alpha=0.9)
+
+        plt.xlabel('{0} Daily Return'.format(base_stock))
+        plt.ylabel('{0} Daily Return'.format(stock))
 
         idx += 1
 
@@ -127,13 +130,15 @@ def linear_space_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    base_stock = 'SCHB'
+    stocks = ['SCHB', 'QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
+
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.DAY,
                                begin_time=date_delta(-52 * 5), end_time=get_today())
 
-    alpha_beta_plot(data, stocks)
+    # alpha_beta_plot(data, stocks)
 
-    linear_space_plot(data, stocks)
+    linear_space_plot(data, stocks, base_stock)
 
     
 
