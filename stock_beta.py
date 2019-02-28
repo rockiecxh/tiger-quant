@@ -1,19 +1,11 @@
-import cmath
 import logging
 
-import matplotlib.pyplot as plt
-import statsmodels.api as sm
-from pandas_datareader import data as pdr
-from statsmodels import regression
+import pandas as pd
 from tigeropen.common.consts import BarPeriod
 
-from lib.chart import subplot_num
 from lib.date import date_delta, get_today
-from lib.quant import beta, alpha_beta
+from lib.quant import alpha_beta
 from tiger.config import get_bars_from_cache, get_quote_client
-import pandas as pd
-import numpy as np
-
 
 """
 波动率计算

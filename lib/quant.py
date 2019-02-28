@@ -39,3 +39,14 @@ def alpha_beta(market_returns: pd.DataFrame, stock_returns: pd.DataFrame):
     model = regression.linear_model.OLS(stock_returns, market_returns).fit()
 
     return model.params[0], model.params[1]
+
+
+def log_return(begin_price: float, end_price: float):
+    """
+    计算对数收益率
+    :param begin_price: 开始的价格
+    :param end_price: 结束的价格
+    :return: 对数收益率
+    """
+    return np.log(begin_price) - np.log(end_price)
+

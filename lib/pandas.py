@@ -6,7 +6,7 @@ import pandas as pd
 from lib.date import timestamp_2_month
 
 
-logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
 
 
 def tuple_2_md5(tp: tuple):
