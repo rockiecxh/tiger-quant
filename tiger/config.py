@@ -45,7 +45,7 @@ def get_quote_client():
 
 
 def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY,
-                        begin_time=-1, end_time=-1, right=QuoteRight.BR, limit=251, lang=None):
+                        begin_time=-1, end_time=-1, right=QuoteRight.BR, limit=10000, lang=None):
     """
     走文件缓存，加快多次访问速度
     :param quote_client:
