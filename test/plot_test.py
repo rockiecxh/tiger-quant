@@ -26,7 +26,8 @@ def test_alpha_beta_plot():
 
 def test_linear_space_plot():
     data = read_pd_from_cache('4b83ce6d6941c0272dd1225343b268da')
-    base_stock = 'SCHB'
+    # base_stock = 'SCHB'
+    base_stock = 'WTI'
     stocks = ['SCHB', 'QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
 
     linear_regression_plot(data, stocks, base_stock)

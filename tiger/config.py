@@ -68,8 +68,8 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
 
     # 调用API获取
     if data is None:
-        data = quote_client.get_bars(symbols=symbols, period=BarPeriod.MONTH,
-                                 begin_time=begin_time, end_time=end_time, limit=10000)
+        data = quote_client.get_bars(symbols=symbols, period=period,
+                                     begin_time=begin_time, end_time=end_time, limit=10000)
 
         if not data.empty:
             write_pd_2_cache(data, md5)

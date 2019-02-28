@@ -44,7 +44,7 @@ def linear_regression_plot(data: pd.DataFrame, stocks: [], base_stock: str):
     :param stocks: 票代码
     :return: 基准票代码
     """
-    spy_data = data.loc[(data["symbol"] == base_stock)]
+    spy_data = data.loc[(data['symbol'] == base_stock)]
 
     return_spy = spy_data['close'].pct_change().dropna()
 
