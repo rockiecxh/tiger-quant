@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from tigeropen.common.consts import BarPeriod
 
 from lib.chart import subplot_num
@@ -32,8 +33,8 @@ def yield_rate_plot(data: pd.DataFrame, stocks: []):
         stock_log = '{0}_log'.format(stock)
 
         df = pd.DataFrame(index=time[1:])
-        df[stock_normal] = normal_return_rate
-        df[stock_log] = ln_return_rate
+        df[stock_normal] = np.cumsum(normal_return_rate)
+        df[stock_log] = np.cumsum(ln_return_rate)
 
         ax = fig.add_subplot(m, n, idx)
         ax.plot(df)
@@ -48,7 +49,7 @@ def yield_rate_plot(data: pd.DataFrame, stocks: []):
 
 if __name__ == '__main__':
     quote_client = get_quote_client()
-    stocks = ['SCHB', 'QQQ', 'SPY']
+    stocks = ['SCHB', 'QQQ', 'TLT', 'IAU']
 
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.DAY,
                                begin_time=date_delta(-52 * 5), end_time=get_today())

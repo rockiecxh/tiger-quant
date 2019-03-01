@@ -35,7 +35,7 @@ def test_linear_space_plot():
 
 
 def test_yield_rate_plot():
-    stocks = ['TLT', 'QQQ', 'SPY']
+    stocks = ['QQQ', 'TLT', 'IAU', 'SPY']
     data = read_pd_from_cache('5b55eaf8428de1427b80842878b28a73')
     yield_rate_plot(data, stocks)
 
