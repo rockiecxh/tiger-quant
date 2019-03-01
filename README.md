@@ -17,13 +17,20 @@ tiger_account=xxx
 
 #####2、如何使用
 
-#####获取指定代码的相关系数并以热力图的方式展现
-~~~
-python correlation_coefficient.py
-~~~
-
 #####ETF价格叠加图
 ~~~
 python line_overlay.py
 ~~~
 ![Alt text](/test/1.png "ETF价格叠加图")
+
+#####ETF累计收益率
+~~~
+python yield_rate.py
+~~~
+![Alt text](/test/2.png "ETF累计收益率")
+
+#####以SPY为基准的线性回归
+~~~
+python stock_relation.py
+~~~
+![Alt text](/test/3.png "以SPY为基准的线性回归")
