@@ -29,4 +29,7 @@ def test_offset_by_date():
     stocks = ['QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
     data = read_pd_from_cache('36c089b44c140ddb2acb2c7e892738a6')
     data = offset_by_date(data, stocks)
+    for stock in stocks:
+        current_data = data.loc[(data["symbol"] == stock)]
+        print('{0} length {1}'.format(stock, len(current_data)))
 

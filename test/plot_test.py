@@ -1,5 +1,6 @@
+from lib.chart import PlotDateType
 from lib.pandas import read_pd_from_cache
-from month_line_overlay import month_line_overlay_plot
+from line_overlay import line_overlay_plot
 from stock_beta import alpha_beta_plot
 from stock_relation import correlation_coefficient_plot, linear_regression_plot
 from yield_rate import yield_rate_plot
@@ -9,7 +10,7 @@ def month_line_overlay_plot_test():
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
     data = read_pd_from_cache('5b55eaf8428de1427b80842878b28a73')
 
-    month_line_overlay_plot(data, stocks)
+    line_overlay_plot(data, stocks, PlotDateType.MONTH)
 
 
 def correlation_coefficient_plot_test():

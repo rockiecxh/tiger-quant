@@ -6,6 +6,7 @@ import seaborn as sns
 from matplotlib import dates
 from tigeropen.common.consts import BarPeriod
 
+from lib.chart import PlotDateType
 from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month
 from lib.quant import normalize
 from tiger.config import get_quote_client, get_bars_from_cache
@@ -27,7 +28,14 @@ def onpick(event):
         # event.canvas.draw()
 
 
-def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
+def line_overlay_plot(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType):
+    """
+    拆线叠加图
+    :param data:
+    :param stocks:
+    :param plotDateType:
+    :return:
+    """
     time = data.loc[(data["symbol"] == stocks[0])]['time']
     time = timestamp_2_date(time.tolist())
 
@@ -44,8 +52,15 @@ def month_line_overlay_plot(data: pd.DataFrame, stocks: []):
     g = sns.lineplot(data=df)
 
     # X轴刻度设置
-    g.format_xdata = dates.AutoDateFormatter(dates.MonthLocator())
+    date_locator = None
+    if plotDateType == PlotDateType.MONTH:
+        date_locator = dates.AutoDateFormatter(dates.MonthLocator())
+    elif plotDateType == PlotDateType.WEEK:
+        date_locator = dates.AutoDateFormatter(dates.WeekdayLocator())
+    elif plotDateType == PlotDateType.DAY:
+        date_locator = dates.AutoDateFormatter(dates.DateLocator())
 
+    g.format_xdata = date_locator
     # 鼠标hover 事件
     # plt.gcf().canvas.mpl_connect('motion_notify_event', onpick)
     plt.legend()
@@ -59,6 +74,6 @@ if __name__ == '__main__':
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.MONTH,
                                begin_time=date_delta(-52 * 14), end_time=get_today())
 
-    month_line_overlay_plot(data, stocks)
+    line_overlay_plot(data, stocks, PlotDateType.MONTH)
 
 

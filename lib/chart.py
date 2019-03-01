@@ -1,5 +1,15 @@
 import cmath
 import random
+from enum import Enum
+
+
+class PlotDateType(Enum):
+    """
+    图表日期类型
+    """
+    DAY = 'day'
+    WEEK = 'week'
+    MONTH = 'month'
 
 
 def random_color():
@@ -29,3 +39,4 @@ def subplot_num(total: int):
             return int(sqrt) + 1, int(sqrt) + 1
 
         return int(sqrt) + 1, int(sqrt)
+

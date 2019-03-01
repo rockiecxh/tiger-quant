@@ -71,24 +71,20 @@ def offset_by_date(df: pd.DataFrame, stocks: []):
     :param stocks:
     :return:
     """
-
     tmp = df[['symbol']].groupby(['symbol']).size()
     tmp = tmp.sort_values(ascending=True)
     min_count_stock = tmp.index[0]
-    # min_data_count = tmp[0]
 
     min_data = df.loc[(df["symbol"] == min_count_stock)]
-    std_time = min_data['time']
 
+    merged_data = pd.DataFrame(index=min_data['time'])
     for stock in stocks:
-        cur_data = df.loc[(df["symbol"] == stock)]
-        logging.info('Lenght: %s %s', stock, len(cur_data))
+        current_data = df.loc[(df["symbol"] == stock)]
+        logging.info('Length: %s %s', stock, len(current_data))
 
-        current_time = cur_data['time']
-        # FIXME
-        diff = list(set(std_time.values).difference(set(current_time.values)))
-        logging.info(timestamp_2_month(current_time.values))
+        tmp = pd.merge(min_data, current_data, on='time')
+        merged_data = merged_data.concat(tmp)
 
-    return df
+    return merged_data
 
 
