@@ -50,3 +50,19 @@ def log_return_rate(begin_price: float, end_price: float):
     """
     return np.log(end_price) - np.log(begin_price)
 
+
+def log_yield_rate(val_arr: []):
+    """
+    计算对数收益率
+    :param val_arr:
+    :return:
+    """
+    yield_rates = []
+    for i in range(len(val_arr)):
+        if i == 0 or i == len(val_arr):
+            continue
+
+        yield_rates.append(log_return_rate(val_arr[i-1], val_arr[i]))
+
+    return yield_rates
+
