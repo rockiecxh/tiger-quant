@@ -25,4 +25,7 @@ def subplot_num(total: int):
     if sqrt.real.is_integer():
         return sqrt, sqrt
     else:
+        if int(sqrt) == 1:
+            return int(sqrt) + 1, int(sqrt) + 1
+
         return int(sqrt) + 1, int(sqrt)
