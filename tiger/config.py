@@ -1,6 +1,6 @@
 import logging
 import os
-
+import numpy as np
 from properties.p import Property
 from tigeropen.common.consts import Language, BarPeriod, QuoteRight
 from tigeropen.common.util.signature_utils import read_private_key
@@ -75,6 +75,6 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
             write_pd_2_cache(data, md5)
 
     # data = offset_by_date(data)
-
+    data.replace(0, np.nan, inplace=True)
     return data
 

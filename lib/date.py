@@ -1,6 +1,15 @@
 import datetime
 
 
+def date_2_month(date: datetime.datetime):
+    """
+    将日期格式化为月份
+    :param date:
+    :return: 月份
+    """
+    return date.strftime('%Y/%m')
+
+
 def timestamp_2_month(arr: []):
     """
     将时间戳类型的数组转换为日期数组

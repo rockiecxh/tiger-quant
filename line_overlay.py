@@ -7,7 +7,7 @@ from matplotlib import dates
 from tigeropen.common.consts import BarPeriod
 
 from lib.chart import PlotDateType
-from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month
+from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month, date_2_month
 from lib.quant import normalize
 from tiger.config import get_quote_client, get_bars_from_cache
 
@@ -17,6 +17,8 @@ https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 """
 
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
+
+plt.rc('font', family='simhei')
 
 
 def onpick(event):
@@ -38,6 +40,8 @@ def line_overlay_plot(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType
     """
     time = data.loc[(data["symbol"] == stocks[0])]['time']
     time = timestamp_2_date(time.tolist())
+    min_date = time[0]
+    max_date = time[-1]
 
     df = pd.DataFrame(index=time)
     for stock in stocks:
@@ -63,6 +67,7 @@ def line_overlay_plot(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType
     g.format_xdata = date_locator
     # 鼠标hover 事件
     # plt.gcf().canvas.mpl_connect('motion_notify_event', onpick)
+    plt.title('指数价格叠加图({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
     plt.legend()
     plt.show()
 
