@@ -19,6 +19,7 @@ https://matplotlib.org/gallery/text_labels_and_annotations/date.html
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
 
 plt.rc('font', family='simhei')
+plt.rcParams['axes.unicode_minus'] = False
 
 
 def onpick(event):
@@ -67,7 +68,7 @@ def line_overlay_plot(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType
     g.format_xdata = date_locator
     # 鼠标hover 事件
     # plt.gcf().canvas.mpl_connect('motion_notify_event', onpick)
-    plt.title('指数价格叠加图({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
+    plt.title('ETF价格叠加图({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
     plt.legend()
     plt.show()
 

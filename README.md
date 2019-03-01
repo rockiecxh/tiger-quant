@@ -22,7 +22,8 @@ tiger_account=xxx
 python correlation_coefficient.py
 ~~~
 
-#####K线叠加
+#####ETF价格叠加图
 ~~~
-python kline_overlay.py
+python line_overlay.py
 ~~~
+![Alt text](/test/1.png "ETF价格叠加图")

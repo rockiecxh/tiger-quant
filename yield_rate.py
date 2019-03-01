@@ -13,6 +13,7 @@ from tiger.config import get_bars_from_cache, get_quote_client
 
 
 plt.rc('font', family='simhei')
+plt.rcParams['axes.unicode_minus'] = False
 
 
 def yield_rate_plot(data: pd.DataFrame, stocks: []):
@@ -40,7 +41,7 @@ def yield_rate_plot(data: pd.DataFrame, stocks: []):
     g.format_xdata = dates.AutoDateFormatter(dates.MonthLocator())
 
     plt.legend()
-    plt.title('各ETF累计收益率({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
+    plt.title('ETF累计收益率({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
     plt.show()
 
 

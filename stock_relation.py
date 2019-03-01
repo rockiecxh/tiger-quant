@@ -18,6 +18,7 @@ https://www.jianshu.com/p/139f06a14916
 logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', level=logging.INFO)
 
 plt.rc('font', family='simhei')
+plt.rcParams['axes.unicode_minus'] = False
 
 
 def correlation_coefficient_plot(data: pd.DataFrame, stocks: []):
@@ -84,7 +85,7 @@ def linear_regression_plot(data: pd.DataFrame, stocks: [], base_stock: str):
 
         idx += 1
 
-    plt.title('以{0}为基准的线性回归({1} - {2})'.format(base_stock, date_2_month(min_date), date_2_month(max_date)))
+    plt.suptitle('以{0}为基准的线性回归({1} - {2})'.format(base_stock, date_2_month(min_date), date_2_month(max_date)))
     plt.show()
 
 

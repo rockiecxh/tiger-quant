@@ -75,6 +75,5 @@ def get_bars_from_cache(quote_client: QuoteClient, symbols, period=BarPeriod.DAY
             write_pd_2_cache(data, md5)
 
     # data = offset_by_date(data)
-    data.replace(0, np.nan, inplace=True)
     return data
 
