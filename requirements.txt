@@ -4,3 +4,4 @@ tigeropen==1.1.1
 matplotlib==3.0.2
 seaborn==0.9.0
 property==2.2
+tweetfeels==
