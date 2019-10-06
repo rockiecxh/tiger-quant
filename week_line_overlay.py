@@ -36,8 +36,9 @@ if __name__ == '__main__':
     quote_client = get_quote_client()
 
     stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
+    # stocks = ['GE', 'GD']
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.WEEK,
-                               begin_time=date_delta(-52 * 5), end_time=get_today())
+                               begin_time=date_delta(-52 * 11), end_time=get_today())
 
     week_line_overlay_plot(data, stocks)
 

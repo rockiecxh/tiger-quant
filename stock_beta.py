@@ -55,10 +55,10 @@ def alpha_beta_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
 
-    stocks = ['SCHB', 'QQQ', 'SPY', 'TLT', 'WTI', 'IAU']
+    stocks = ['QQQ', 'SPY', 'TLT', 'USO', 'IAU']
 
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.DAY,
-                               begin_time=date_delta(-52 * 5), end_time=get_today())
+                               begin_time=date_delta(-52 * 8), end_time=get_today())
 
     alpha_beta_plot(data, stocks)
 

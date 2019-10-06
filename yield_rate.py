@@ -35,6 +35,7 @@ def yield_rate_plot(data: pd.DataFrame, stocks: []):
         logging.info('%s data size %s', stock, len(stock_data))
         ln_return_rate = log_yield_rate(list(stock_data['close']))
         df[stock] = np.cumsum(ln_return_rate)
+        print(np.cumsum(ln_return_rate))
 
     g = sns.lineplot(data=df)
     # X轴刻度设置
@@ -48,8 +49,9 @@ def yield_rate_plot(data: pd.DataFrame, stocks: []):
 if __name__ == '__main__':
     quote_client = get_quote_client()
     stocks = ['QQQ', 'SPY', 'TLT', 'IAU', 'WTI']
+    # stocks = ['TLT', 'IEF']
 
     data = get_bars_from_cache(quote_client, symbols=stocks, period=BarPeriod.WEEK,
-                               begin_time=date_delta(-52 * 10), end_time=get_today())
+                               begin_time=date_delta(-52 * 5), end_time=get_today())
     yield_rate_plot(data, stocks)
 
