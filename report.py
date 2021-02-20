@@ -8,4 +8,4 @@ if __name__ == '__main__':
     income_statement = fa.income_statement(symbol)
     cashflows = fa.cashflows(symbol)
     ratios = fa.ratios(symbol)
-    stock_data = fa.stock_data(2015, 2019, symbol, include_returns=True)
+    stock_data = fa.stock_data(2019, 2021, symbol, include_returns=True)
