@@ -7,7 +7,7 @@ from matplotlib import dates
 from tigeropen.common.consts import BarPeriod
 
 from lib.chart import PlotDateType
-from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month, date_2_month
+from lib.date import date_delta, get_today, timestamp_2_date, timestamp_2_month, date_2_month, timestr_2_date
 from lib.quant import normalize
 from tiger.config import get_quote_client, get_bars_from_cache
 
@@ -47,6 +47,48 @@ def line_overlay_plot(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType
     df = pd.DataFrame(index=time)
     for stock in stocks:
         stock_data = data.loc[(data["symbol"] == stock)]
+        # logging.info(timestamp_2_month(stock_data['time']))
+        stock_data = list(normalize(stock_data, 'close'))
+
+        logging.info('%s %s', stock, len(stock_data))
+
+        df[stock] = stock_data
+
+    g = sns.lineplot(data=df)
+
+    # X轴刻度设置
+    date_locator = None
+    if plotDateType == PlotDateType.MONTH:
+        date_locator = dates.AutoDateFormatter(dates.MonthLocator())
+    elif plotDateType == PlotDateType.WEEK:
+        date_locator = dates.AutoDateFormatter(dates.WeekdayLocator())
+    elif plotDateType == PlotDateType.DAY:
+        date_locator = dates.AutoDateFormatter(dates.DateLocator())
+
+    g.format_xdata = date_locator
+    # 鼠标hover 事件
+    # plt.gcf().canvas.mpl_connect('motion_notify_event', onpick)
+    plt.title('ETF价格叠加图({0} - {1})'.format(date_2_month(min_date), date_2_month(max_date)))
+    plt.legend()
+    plt.show()
+
+
+def line_overlay_plot_futu(data: pd.DataFrame, stocks: [], plotDateType: PlotDateType):
+    """
+    拆线叠加图
+    :param data:
+    :param stocks:
+    :param plotDateType:
+    :return:
+    """
+    time = data.loc[(data["code"] == stocks[0])]['time_key']
+    time = timestr_2_date(time.tolist())
+    min_date = time[0]
+    max_date = time[-1]
+
+    df = pd.DataFrame(index=time)
+    for stock in stocks:
+        stock_data = data.loc[(data["code"] == stock)]
         # logging.info(timestamp_2_month(stock_data['time']))
         stock_data = list(normalize(stock_data, 'close'))
 

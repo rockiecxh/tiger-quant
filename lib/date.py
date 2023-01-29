@@ -1,5 +1,7 @@
 import datetime
 
+from pandas._libs.tslibs.timestamps import Timestamp
+
 
 def date_2_month(date: datetime.datetime):
     """
@@ -31,7 +33,18 @@ def timestamp_2_date(arr: []):
     """
     temp = []
     for x in arr:
-        temp.append(datetime.datetime.utcfromtimestamp(x / 1000))
+        if isinstance(x, int):
+             temp.append(datetime.datetime.utcfromtimestamp(x))
+        elif isinstance(x, Timestamp):
+            temp.append(x)
+
+    return temp
+
+
+def timestr_2_date(arr: []):
+    temp = []
+    for x in arr:
+        temp.append(datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
 
     return temp
 
